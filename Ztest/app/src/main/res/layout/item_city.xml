@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="10dp"
+        android:paddingEnd="10dp"
+        android:background="@drawable/lay_shape"
+        >
+        <TextView
+            android:id="@+id/text_loc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="自动定位"
+            android:textColor="#ffffff"
+            android:gravity="center"/>
+        <ImageView
+            android:id="@+id/image_weather"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/text_loc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/weather_img_3"
+            />
+        <TextView
+            android:layout_below="@id/image_weather"
+            android:id="@+id/text_weather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:gravity="center"/>
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/text_weather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00ff66"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="默认"
+                android:gravity="center"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

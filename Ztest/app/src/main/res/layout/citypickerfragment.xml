@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@mipmap/bg_fine_day"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#0066cc"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:id="@+id/image_return"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentLeft="true"
+            android:src="@mipmap/left"
+            />
+        <ImageView
+            android:id="@+id/image_setting"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/setting"
+            />
+
+        <ImageView
+            android:id="@+id/image_addcity"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/image_setting"
+            android:src="@mipmap/ic"
+            />
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="match_parent">
+
+        <GridView
+            android:id="@+id/grid_view"
+            android:layout_width="match_parent"
+android:verticalSpacing="10dp"
+            android:numColumns="3"
+            android:layout_height="match_parent">
+
+
+        </GridView>
+    </LinearLayout>
+
+</LinearLayout>
