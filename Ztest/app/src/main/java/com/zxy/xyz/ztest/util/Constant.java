@@ -5,6 +5,7 @@ package com.zxy.xyz.ztest.util;
  */
 
 public class Constant {
+    private static final String APPKEY = "1d17e4da746dc";
     public static final int HANDLE_NUM_ONE=0;
     public static final int RESPONSE_SUCCESS=1;
     public static final int CHANGE_PHOTO=2;

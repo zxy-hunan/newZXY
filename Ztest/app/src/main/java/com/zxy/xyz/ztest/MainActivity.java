@@ -11,14 +11,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
 import com.zxy.xyz.ztest.ui.MapFragment;
+import com.zxy.xyz.ztest.ui.NbaFragment;
 import com.zxy.xyz.ztest.ui.WeatherFragment;
-import com.zxy.xyz.ztest.ui.WecActivity;
 
 import org.xutils.x;
 
@@ -32,7 +34,8 @@ public class MainActivity extends AppCompatActivity
     private MapView mMapView;
     private BaiduMap baiduMap;
     private Toolbar toolbar;
-
+    FragmentManager fragmentManager;
+    FragmentTransaction ft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         x.view().inject(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        fragmentManager=getFragmentManager();
+
         mMapView=(MapView)findViewById(R.id.bmapview);
         baiduMap=mMapView.getMap();
 
@@ -72,8 +77,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Intent intent=new Intent();
-        FragmentManager fragmentManager=getFragmentManager();
-        FragmentTransaction ft=fragmentManager.beginTransaction();
+        ft=fragmentManager.beginTransaction();
 
         if (id == R.id.nav_camera) {
             toolbar.setVisibility(View.VISIBLE);
@@ -87,8 +91,8 @@ public class MainActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_slideshow) {
-            intent.setClass(MainActivity.this,WecActivity.class);
-            this.startActivity(intent);
+            toolbar.setVisibility(View.VISIBLE);
+            ft.replace(R.id.content_main,new NbaFragment());
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -106,5 +110,17 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-
+boolean isBack=false;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction()==MotionEvent.ACTION_DOWN){
+            if(!isBack) {
+                Toast.makeText(this, "再按一次退出！", Toast.LENGTH_SHORT).show();
+                isBack=true;
+            }else{
+                finish();
+            }
+        }
+        return super.onTouchEvent(event);
+    }
 }

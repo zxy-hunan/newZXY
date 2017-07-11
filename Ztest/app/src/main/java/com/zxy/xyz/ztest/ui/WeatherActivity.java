@@ -25,7 +25,6 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
     private String CITY=URLEncoder.encode(city,"UTF-8");
     private String PROVINCE=URLEncoder.encode(province,"UTF-8");
     private String WEATHERURI="http://apicloud.mob.com/v1/weather/query?key="+APPKEY+"&city="+CITY+"&province="+PROVINCE;
-
     public WeatherActivity() throws UnsupportedEncodingException {
     }
 
@@ -33,6 +32,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
+
         setContentView(R.layout.activity_weather);
         initView();
     }

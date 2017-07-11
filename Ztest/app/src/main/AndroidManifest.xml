@@ -35,7 +35,7 @@
      android:value="wm3syeLTMHV08kRETDkjDwEqk7augXWm"
       ></meta-data>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.WecActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -44,9 +44,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.NBA.NbaInfoActivity"></activity>
         <activity android:name=".ui.WeatherActivity"
             ></activity>
-        <activity android:name=".ui.WecActivity"></activity>
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
+        <service android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"
+            ></service>
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

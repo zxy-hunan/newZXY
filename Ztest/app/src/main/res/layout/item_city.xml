@@ -21,13 +21,13 @@
         <TextView
             android:id="@+id/text_loc"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:text="自动定位"
             android:textColor="#ffffff"
             android:gravity="center"/>
         <ImageView
             android:id="@+id/image_weather"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_below="@id/text_loc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

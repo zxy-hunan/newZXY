@@ -99,4 +99,43 @@ public static ArrayList<Weather> getWeaList(String str){
 
     return alist;
 }
+
+
+    /**
+     *
+     * @param str
+     * @return
+     */
+    public static WeatherInfo getWeaInfo(String str){
+        WeatherInfo wi=new WeatherInfo();
+        try {
+            JSONObject jsonObject=new JSONObject(str);
+            JSONArray jsonArray=jsonObject.getJSONArray("result");
+            JSONObject data=jsonArray.getJSONObject(0);
+            JSONArray future=data.getJSONArray("future");
+
+                JSONObject ob = future.getJSONObject(0);
+            String temperature1;
+            String wind1;
+            if (ob.has("temperature")) {
+                 temperature1 = ob.getString("temperature");
+            }else{
+                 temperature1 = "失败";
+            }
+            if(ob.has("wind")) {
+                 wind1 = ob.getString("wind");
+            }else{
+                wind1="失败";
+            }
+                wi.setTemperature(temperature1);
+                wi.setWind(wind1);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return wi;
+    }
 }

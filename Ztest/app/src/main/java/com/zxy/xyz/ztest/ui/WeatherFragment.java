@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.baidu.location.g.j.t;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 
 /**
@@ -51,11 +51,9 @@ import static com.baidu.location.g.j.t;
 public class WeatherFragment extends Fragment implements BDLocationListener, View.OnClickListener {
     private LocationClient locationClient;
     private static String APPKEY = "1d17e4da746dc";
-    private String city = "深圳";
-    private String province = "广东";
-    private String CITY = URLEncoder.encode(city, "UTF-8");
-    private String PROVINCE = URLEncoder.encode(province, "UTF-8");
-    private String WEATHERURI = "http://apicloud.mob.com/v1/weather/query?key=" + APPKEY + "&city=" + CITY + "&province=" + PROVINCE;
+    private String city ;
+    private String province ;
+
     private String location;
     private LinearLayout ll_we;
     private TextView text_city;
@@ -87,6 +85,8 @@ public class WeatherFragment extends Fragment implements BDLocationListener, Vie
     private int[] imageNightLen={R.mipmap.bg_cloudy_night,R.mipmap.bg_fine_night,R.mipmap.bg_fog,R.mipmap.bg_haze,R.mipmap.bg_thunder_storm};
     private ImageView image_firebal;
     private int hour;
+    private String WEATHERURI;
+    private String cityName;
 
     public WeatherFragment() throws UnsupportedEncodingException {
     }
@@ -98,7 +98,7 @@ public class WeatherFragment extends Fragment implements BDLocationListener, Vie
                 case Constant.RESPONSE_SUCCESS:
                     ArrayList<Weather> alist = (ArrayList) msg.obj;
                     Weather we = alist.get(0);
-                    text_city.setText(we.getCity());
+                    text_city.setText(city);
                     text_ll_date.setText(we.getTime());
                     text_date.setText(we.getDate());
                     text_airnum.setText(we.getPollutionIndex());
@@ -178,16 +178,45 @@ public class WeatherFragment extends Fragment implements BDLocationListener, Vie
 
         view = inflater.inflate(R.layout.activity_weather, null);
         initView();
-        initLocation();
         preferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
         editor = preferences.edit();
-        String cityName = preferences.getString("city", "");
+//        initLocation();
+
+        cityName = preferences.getString("city", "");
         if (!cityName.equals("")) {
-            String cityM = cityName.substring(0, cityName.indexOf("."));
-            String province1 = cityName.substring(cityName.indexOf("."), cityName.length());
+            String cityW=cityName.substring(0, cityName.indexOf("."));
+            String cityM;
+            if (cityW.substring(cityW.length()-1).equals("县")){
+                cityM = cityName.substring(0, cityName.indexOf("."));
+            }else {
+                cityM = cityName.substring(0, cityName.indexOf(".") - 1);
+            }
+            String province1 = cityName.substring(cityName.indexOf(".")+1, cityName.length()-1);
+            String cityM1=cityM.substring(cityM.length()-1);
+            if(cityM1.equals("区")){
+                city = province1;
+            }else{
+                city = cityM;
+            }
             province = province1;
-            city = cityM;
+
         }
+        String CITY = null;
+        String PROVINCE=null;
+        try {
+            if(city.equals(" ")||province.equals(" ")){
+
+                CITY = URLEncoder.encode("深圳市", "UTF-8");
+                PROVINCE = URLEncoder.encode("广东省", "UTF-8");
+            }else {
+                CITY = URLEncoder.encode(city, "UTF-8");
+                PROVINCE = URLEncoder.encode(province, "UTF-8");
+            }
+            WEATHERURI = "http://apicloud.mob.com/v1/weather/query?key=" + APPKEY + "&city=" + CITY + "&province=" + PROVINCE;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         Time t=new Time();
         t.setToNow();
         hour=t.hour;
@@ -245,21 +274,55 @@ public class WeatherFragment extends Fragment implements BDLocationListener, Vie
         switch (v.getId()) {
 
             case R.id.image_add:
-             getActivity().getFragmentManager().beginTransaction().replace(R.id.content_main,new CityPickerFragment()).commit();
+                try {
+                    getActivity().getFragmentManager().beginTransaction().replace(R.id.content_main,new CityPickerFragment()).commit();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.image_location:
-                  initLocation();
+                initLocation();
+                String t_city = cityName.substring(0, cityName.indexOf(".")-1);
+                if("".equals(t_city)){
+                    text_city.setText(t_city);
+                    Toast.makeText(getActivity(),"定位成功！",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.image_share:
-
+                showShare();
                 break;
             case R.id.image_set:
-
+                getActivity().getFragmentManager().beginTransaction().replace(R.id.content_main,new SettingFragment()).commit();
                 break;
 
         }
     }
+    private void showShare() {
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+        // title标题，印象笔记、邮箱、信息、微信、人人网、QQ和QQ空间使用
+        oks.setTitle("标题");
+        // titleUrl是标题的网络链接，仅在Linked-in,QQ和QQ空间使用
+        oks.setTitleUrl("http://sharesdk.cn");
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText("我是分享文本");
+        //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
+        oks.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl("http://sharesdk.cn");
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("我是测试评论文本");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite("ShareSDK");
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl("http://sharesdk.cn");
 
+// 启动分享GUI
+        oks.show(getActivity());
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -303,10 +366,11 @@ public class WeatherFragment extends Fragment implements BDLocationListener, Vie
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
         location = bdLocation.getLatitude() + "," + bdLocation.getLongitude();
-        editor.putString("city", bdLocation.getCity() + "." + bdLocation.getProvince());
-        editor.putString("location", location);
-        editor.commit();
-        Toast.makeText(getActivity(), bdLocation.getCity() + bdLocation.getProvince(), Toast.LENGTH_SHORT).show();
+//        if(cityName==null) {
+            editor.putString("city", bdLocation.getCity() + "." + bdLocation.getProvince());
+            editor.putString("location", location);
+            editor.commit();
+//        }
     }
 
     @Override
@@ -335,7 +399,7 @@ public class WeatherFragment extends Fragment implements BDLocationListener, Vie
         option.setOpenGps(true);
         //可选，默认false,设置是否使用gps
 
-        option.setLocationNotify(true);
+        option.setLocationNotify(false);
         //可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
 
         option.setIsNeedLocationDescribe(true);

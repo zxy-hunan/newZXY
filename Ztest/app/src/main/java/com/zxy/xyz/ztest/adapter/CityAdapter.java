@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.zxy.xyz.ztest.R;
 import com.zxy.xyz.ztest.biz.City;
+import com.zxy.xyz.ztest.biz.WeatherInfo;
 
 import java.util.ArrayList;
 
@@ -20,9 +21,11 @@ import java.util.ArrayList;
 public class CityAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<City> al;
-    public CityAdapter(Context context,ArrayList<City> al){
+    private ArrayList<WeatherInfo> wi;
+    public CityAdapter(Context context,ArrayList<City> al,ArrayList<WeatherInfo> wi){
         this.context=context;
         this.al=al;
+        this.wi=wi;
     }
     @Override
     public int getCount() {
@@ -58,15 +61,13 @@ public class CityAdapter extends BaseAdapter {
             viewHandler=(ViewHandler) view.getTag();
 
         }
-        String pc=al.get(position).getCity();
-        String cityLsat=pc.substring(pc.length()-1);
-        if(cityLsat.equals("区")){
-            viewHandler.text_loc.setText(al.get(position).getProvince()+al.get(position).getCity());
-        }else{
-            viewHandler.text_loc.setText(al.get(position).getProvince()+al.get(position).getCity());
-        }
+            viewHandler.text_loc.setText(al.get(position).getDistrict());
+
+//            viewHandler.text_weather.setText(wi.get(position).getTemperature());
+
+
 //
-//        viewHandler.text_weather.setText("21/23:");
+//        viewHandler.text_weather.setText("白天:"+al.get(position).getDayTime());
 //        viewHandler.text_default.setText("夜晚:"+al.get(position).getNight());
 //        viewHandler.image_weather.setBackground("夜晚:"+al.get(position).getNight());
         return view;

@@ -3,9 +3,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="@mipmap/bg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_wec"
+        android:textColor="#f91703"
+        android:text="5"
+        android:textSize="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"/>
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/image_wec"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,10 +25,23 @@
         android:src="@mipmap/ic_launcher"
         />
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/image_wec"
+        android:textSize="20dp"
+        android:textColor="#050505"
         android:gravity="center"
         android:text="@string/app_version"
         />
+    <TextView
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:textColor="#33ff00"
+        android:textSize="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="繁华的深圳\n多少人来来又去去"/>
 </RelativeLayout>

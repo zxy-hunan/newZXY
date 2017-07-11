@@ -33,7 +33,11 @@ public class SqliteDBUtil {
         ContentValues cValues=new ContentValues();
         cValues.put("province",province);
         cValues.put("city",city);
-        cValues.put("district",district);
+        if (district.substring(city.length()-1).equals("区")){
+            cValues.put("district",city);
+        }else {
+            cValues.put("district", district);
+        }
         if(code.equals("")){
             cValues.put("code", "000000");
         }else {
@@ -48,7 +52,7 @@ public class SqliteDBUtil {
     public int deleteDB(String district,String city){
         int result=0;
         String sql;
-        String cityLsat=city.substring(city.length()-1);
+        String cityLsat=city.substring(0,city.length()-1);
         if(cityLsat.equals("区")){
            sql="delete from city where district="+district;
             result=1;

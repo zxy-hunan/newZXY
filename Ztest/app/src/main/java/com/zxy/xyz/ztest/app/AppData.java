@@ -1,14 +1,14 @@
 package com.zxy.xyz.ztest.app;
 
-import android.app.Application;
-
+import org.litepal.LitePalApplication;
 import org.xutils.x;
+
 
 /**
  * Created by 51c on 2017/4/17.
  */
 
-public class AppData extends Application {
+public class AppData extends LitePalApplication {
 
     public AppData(){
 
