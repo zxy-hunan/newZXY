@@ -45,6 +45,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.NBA.NbaInfoActivity"></activity>
+        <activity android:name=".ui.PhotoInfoActivity"></activity>
         <activity android:name=".ui.WeatherActivity"
             ></activity>
         <activity android:name=".MainActivity"

@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.zxy.xyz.ztest.biz.Pictures;
 import com.zxy.xyz.ztest.ui.NBA.bean.New;
 import com.zxy.xyz.ztest.ui.NBA.bean.NumFlag;
 
@@ -11,7 +12,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.litepal.crud.DataSupport;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -77,6 +80,79 @@ public class Net {
         return al;
     }
 
+
+    public void getPhoto(){
+        Document dc = null;
+        ArrayList<Pictures> al = new ArrayList<>();
+        try {
+            dc = Jsoup.connect(NumFlag.PHOTO).get();
+            DataSupport.deleteAll(Pictures.class);
+            Elements elements=dc.getElementsByClass("news-wrap");
+            for (int i = 0; i < elements.size(); i++) {
+                Pictures pictures = new Pictures();
+                Element element = elements.get(i);
+                Elements elementss = element.getElementsByClass("news-title");
+                Elements eImg = element.select("img[data-original]");
+                Elements eAhref = element.select("a[href]");
+
+                for (Element ea : eAhref) {
+                    String href = ea.attr("href");
+                    String imgHref=getImgListString(href);
+                    pictures.setpHref(imgHref);
+                }
+
+                for (int l = 0; l < eImg.size(); l++) {
+                    String imgSrc = eImg.get(l).attr("data-original");
+                    pictures.setpImg(imgSrc);
+                }
+
+                for (int j = 0; j < elementss.size(); j++) {
+                    pictures.setpTitle(elementss.get(j).text());
+                }
+                al.add(pictures);
+                DataSupport.saveAll(al);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public String getImgListString(String str) {
+        String newStr = str.replace("nbachina", "shipei");
+        String[] s = newStr.split(".htm");
+        String s1 = "";
+        for (int i = 0; i < s.length; i++) {
+            s1 += s[i];
+        }
+        String s3 = s1.replace("a", "c");
+        String s4 = s3.substring(0, 23) + "chinanba/" + s3.substring(23, s3.length());
+        int num = s4.lastIndexOf("/");
+        String left = s4.substring(0, num);
+        String right = s4.substring(num + 1, s4.length());
+        String s5 = left + right;
+        return s5;
+    }
+    public static ArrayList<String> getPhotoList(String path) {
+        ArrayList<String> list = new ArrayList<>();
+        if (path != null) {
+            Document dc = null;
+            try {
+                dc = Jsoup.connect(path).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Elements elements = dc.getElementsByClass("image split");
+            for (Element el : elements) {
+                Elements elImg = el.select("img[src]");
+                String eImg = elImg.attr("src");
+                list.add(eImg);
+                System.out.println("图片的地址为" + eImg);
+            }
+
+        }
+        return list;
+    }
+
     class NetThread implements Runnable{
         Handler handler;
         String path;
@@ -87,6 +163,7 @@ public class Net {
         @Override
         public void run() {
              getNewsInfo(handler,path);
+             getPhoto();
         }
     }
 }

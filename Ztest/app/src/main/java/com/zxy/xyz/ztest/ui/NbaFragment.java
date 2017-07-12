@@ -14,6 +14,8 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.zxy.xyz.ztest.R;
 import com.zxy.xyz.ztest.ui.NBA.HomeFragment;
+import com.zxy.xyz.ztest.ui.NBA.MatchFragment;
+import com.zxy.xyz.ztest.ui.NBA.PhotoFragment;
 
 /**
  * Created by 51c on 2017/7/4.
@@ -60,6 +62,12 @@ public class NbaFragment extends Fragment implements BottomNavigationBar.OnTabSe
         switch (position){
             case 0:
                 ft.replace(R.id.layFrame,new HomeFragment());
+                break;
+            case 1:
+                ft.replace(R.id.layFrame,new MatchFragment());
+                break;
+            case 2:
+                ft.replace(R.id.layFrame,new PhotoFragment());
                 break;
         }
         ft.commit();

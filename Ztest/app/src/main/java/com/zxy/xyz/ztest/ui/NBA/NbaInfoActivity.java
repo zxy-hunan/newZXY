@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,8 @@ public class NbaInfoActivity extends Activity{
     private LinearLayout llInfo;
     private ImageView imageView3;
     private String img;
+    private String title;
+    private TextView text_title;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,8 +54,11 @@ public class NbaInfoActivity extends Activity{
         setContentView(R.layout.nbainfoactivity);
         llInfo=(LinearLayout)findViewById(R.id.ll_news);
         imageView3=(ImageView)findViewById(R.id.imageView3);
+        text_title=(TextView)findViewById(R.id.text_title);
         url=intent.getStringExtra("url");
         img=intent.getStringExtra("img");
+        title=intent.getStringExtra("title");
+        text_title.setText(title);
         new Thread(new Runnable() {
             @Override
             public void run() {
