@@ -1,5 +1,6 @@
 package com.zxy.xyz.ztest.ui.NBA.util;
 
+import android.icu.text.UnicodeSet;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -15,7 +16,12 @@ import org.jsoup.select.Elements;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
+import java.security.KeyStore;
 import java.util.ArrayList;
+
+import static com.baidu.location.g.a.i;
+import static org.litepal.crud.DataSupport.select;
+
 
 /**
  * Created by 51c on 2017/7/4.
@@ -23,10 +29,19 @@ import java.util.ArrayList;
 
 public class Net {
 
-    public Net(Handler handler,String path){
+    private static Elements els;
+    public static boolean isfresh=false;
+    private static New news;
+    private final Thread thread;
+
+    public Net(Handler handler, String path){
         NetThread netThread=new NetThread(handler,path);
-        Thread thread=new Thread(netThread);
+        thread=new Thread(netThread);
         thread.start();
+    }
+
+    public void netDestory(){
+        thread.destroy();
     }
     /**
      * 获得新闻信息
@@ -35,45 +50,50 @@ public class Net {
         ArrayList<New> al = new ArrayList<>();
         try {
             Document dc = Jsoup.connect(NumFlag.HTML).get();
-            Elements els=dc.getElementsByClass("news-list");
-            Elements elements = els.get(0).getElementsByClass(path);
-            if(path.equals("news-wrap hide")){
-                elements=elements.get(0).getElementsByClass(path);
-            }
+            DataSupport.deleteAll(New.class);
+//            Elements els=dc.select("div .news-page").select(".index-news");
+                 els=dc.getElementsByClass(path);
 
-            Log.i("TAG","大小:"+elements.size());
-            for (int i = 0; i < elements.size(); i++) {
-                New news = new New();
-                Element element = elements.get(i);
-                //新闻的标题
-                Elements elementss = element.getElementsByClass("news-title");
-                //图片地址
-                Elements eImg = element.select("img[data-original]");
-                //新闻链接
-                Elements eAhref = element.select("a[href]");
-                //新闻日期
-                Elements eDate = element.select("b");
-                news.setDate(eDate.text());
-                for (Element ea : eAhref) {
-                    String href = ea.attr("href");
-                    news.setHref(href);
-                }
 
-                for (int l = 0; l < eImg.size(); l++) {
-                    String imgSrc = eImg.get(l).attr("data-original");
-                    news.setImg(imgSrc);
-                }
-
+//            Log.i("elements","els"+els.html());
+            Elements elements =els.get(0).getElementsByClass("news-title");
+            Elements elementT =els.get(0).select("img[data-original]");
+            Elements elementH =els.get(0).select("a[href]");
+            Elements elementB =els.get(0).select("i");
+            Log.i("elements","elementB"+elementB.text());
+            Log.i("TAG","elements:"+elements.size()+"elementT"+elementT.size()+"elementH"+elementH.size()+"elementB"+elementB.size());
+//            for(int i=0;i<elements.size();i++){
+//                Elements eImg = els.get(i).select("img[data-original]");
+//                Elements eAhref = els.get(i).select("a[href]");
+//            }
+            for (int l = 0; l < elementT.size(); l++) {
+                news = new New();
+                String imgSrc = elementT.get(l).attr("data-original");
+                news.setImg(imgSrc);
+                Log.i("elements","elements"+imgSrc);
+                news.setDate(elementB.get(l).text());
+                String href = elementH.get(l).attr("href");
+                news.setHref(href);
+                Log.i("elements","href"+href);
+                Element element = elements.get(l);
+                Elements elementss = element.select("span");
                 for (int j = 0; j < elementss.size(); j++) {
                     news.setTitle(elementss.get(j).text());
                 }
-
                 al.add(news);
             }
+            DataSupport.saveAll(al);
+
             Message msg=new Message();
             msg.obj=al;
-            msg.what=0;
+            if(isfresh){
+                msg.what=1;
+            }else{
+                msg.what=0;
+            }
+
             mHandler.sendMessage(msg);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,31 +108,23 @@ public class Net {
             dc = Jsoup.connect(NumFlag.PHOTO).get();
             DataSupport.deleteAll(Pictures.class);
             Elements elements=dc.getElementsByClass("news-wrap");
-            for (int i = 0; i < elements.size(); i++) {
+            Elements elementss = elements.get(0).getElementsByClass("news-title");
+            Elements eImg = elements.get(0).select("img[data-original]");
+            Elements eAhref = elements.get(0).select("a[href]");
+            Elements elementB =els.get(0).select("i");
+            Log.i("TAG","elementss:"+elementss.size()+"eImg"+eImg.size()+"eAhref"+eAhref.size());
+            for (int i = 0; i < elementss.size(); i++) {
                 Pictures pictures = new Pictures();
-                Element element = elements.get(i);
-                Elements elementss = element.getElementsByClass("news-title");
-                Elements eImg = element.select("img[data-original]");
-                Elements eAhref = element.select("a[href]");
-
-                for (Element ea : eAhref) {
-                    String href = ea.attr("href");
+                    String href = eAhref.get(i).attr("href");
                     String imgHref=getImgListString(href);
                     pictures.setpHref(imgHref);
-                }
-
-                for (int l = 0; l < eImg.size(); l++) {
-                    String imgSrc = eImg.get(l).attr("data-original");
+                    String imgSrc = eImg.get(i).attr("data-original");
                     pictures.setpImg(imgSrc);
-                }
-
-                for (int j = 0; j < elementss.size(); j++) {
-                    pictures.setpTitle(elementss.get(j).text());
-                }
-                al.add(pictures);
-                DataSupport.saveAll(al);
+                    pictures.setpTitle(elementss.get(i).text());
+                    pictures.setpDate(elementB.get(i).text());
+                    al.add(pictures);
             }
-
+            DataSupport.saveAll(al);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,8 +144,9 @@ public class Net {
         String s5 = left + right;
         return s5;
     }
-    public static ArrayList<String> getPhotoList(String path) {
-        ArrayList<String> list = new ArrayList<>();
+    public static ArrayList<Pictures> getPhotoList(String path) {
+        ArrayList<Pictures> list = new ArrayList<>();
+        boolean isNull=false;
         if (path != null) {
             Document dc = null;
             try {
@@ -141,11 +154,28 @@ public class Net {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Elements elements = dc.getElementsByClass("image split");
-            for (Element el : elements) {
-                Elements elImg = el.select("img[src]");
+            Elements elements = dc.select("div .image").select(".split");
+            Elements elT=dc.select("p.split");
+            if(elT.size()==0||elT.size()!=elements.size()){
+                isNull= true;
+            }
+            Log.i("TAG","elT:"+elT.html());
+            for (int i=0;i<elements.size();i++) {
+                Pictures pictures = new Pictures();
+                Elements elImg = elements.get(i).select("img[src]");
                 String eImg = elImg.attr("src");
-                list.add(eImg);
+                pictures.setpImg(eImg);
+                if(!isNull) {
+                    if (elT.get(i).text().equals(" ")) {
+                        pictures.setpTitle(" ");
+                    } else {
+                        pictures.setpTitle(elT.get(i).text());
+                    }
+                }else{
+                    pictures.setpTitle(" ");
+                }
+                list.add(pictures);
+//                Log.i("TAG","elT:"+elT.get(i).text());
                 System.out.println("图片的地址为" + eImg);
             }
 

@@ -16,7 +16,7 @@ public class NumFlag {
     public static final String SCORE_TWO_HTML="https://nba.hupu.com/stats/players/tpp";
     public static final String SCORE_ONE_HTML="https://nba.hupu.com/stats/players/fgp/1";
     public static final String VIDEOHTML="http://china.nba.com/videos/";
-    public static final String HTML = "http://china.nba.com/news";
+    public static final String HTML = "http://china.nba.com/news/";
     public static final String SCOREHTML="https://nba.hupu.com/stats/players/pts";
     public static final int HANDLER_MSG_WHAT_ZERO = 0;
     public static final int HANDLER_MSG_WHAT_ONE = 1;

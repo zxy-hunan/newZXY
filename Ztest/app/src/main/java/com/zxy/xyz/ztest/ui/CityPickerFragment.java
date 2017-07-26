@@ -1,6 +1,6 @@
 package com.zxy.xyz.ztest.ui;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -96,7 +96,7 @@ public class CityPickerFragment extends Fragment implements View.OnClickListener
 
                     editor.commit();
                     try {
-                        getActivity().getFragmentManager().beginTransaction().replace(R.id.content_main,new WeatherFragment()).commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_main,new WeatherFragment()).commit();
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
@@ -183,7 +183,7 @@ public class CityPickerFragment extends Fragment implements View.OnClickListener
                 break;
             case  R.id.image_return:
                 try {
-                    getActivity().getFragmentManager().beginTransaction().replace(R.id.content_main,new WeatherFragment()).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_main,new WeatherFragment()).commit();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

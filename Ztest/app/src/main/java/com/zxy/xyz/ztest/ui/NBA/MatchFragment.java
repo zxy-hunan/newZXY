@@ -1,6 +1,6 @@
 package com.zxy.xyz.ztest.ui.NBA;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.zxy.xyz.ztest.MainActivity;
 import com.zxy.xyz.ztest.R;
 import com.zxy.xyz.ztest.adapter.SectionedAdapter;
 import com.zxy.xyz.ztest.biz.MatchInfo;
@@ -35,7 +36,8 @@ public class MatchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.matchfragment,null);
-
+        MainActivity.toolbar.setTitle("比赛");
+        MainActivity.toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         mTabLayout = (TabLayout) view.findViewById(R.id.tab_FindFragment_title);
         mViewPager = (ViewPager) view.findViewById(R.id.vp_FindFragment_pager);
         initDatas();

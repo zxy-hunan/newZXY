@@ -39,5 +39,5 @@ dependencies {
     compile 'com.ashokvarma.android:bottom-navigation-bar:1.2.0'
     compile 'org.jsoup:jsoup:1.9.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile "de.halfbit:pinned-section-listview:1.0.0"
+    compile 'de.halfbit:pinned-section-listview:1.0.0'
 }

@@ -2,9 +2,11 @@
 <litepal>
     <dbname value="zxy" ></dbname>
 
-    <version value="2" ></version>
+    <version value="5" ></version>
 
     <list>
         <mapping class="com.zxy.xyz.ztest.biz.Pictures"></mapping>
+        <mapping class="com.zxy.xyz.ztest.ui.NBA.bean.New"></mapping>
+        <mapping class="com.zxy.xyz.ztest.biz.MainPhotoItem"></mapping>
     </list>
 </litepal>

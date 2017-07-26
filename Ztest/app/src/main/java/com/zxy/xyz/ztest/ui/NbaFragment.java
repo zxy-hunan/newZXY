@@ -1,8 +1,9 @@
 package com.zxy.xyz.ztest.ui;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.zxy.xyz.ztest.R;
 import com.zxy.xyz.ztest.ui.NBA.HomeFragment;
 import com.zxy.xyz.ztest.ui.NBA.MatchFragment;
+import com.zxy.xyz.ztest.ui.NBA.MoreFragment;
 import com.zxy.xyz.ztest.ui.NBA.PhotoFragment;
 
 /**
@@ -22,14 +24,14 @@ import com.zxy.xyz.ztest.ui.NBA.PhotoFragment;
  */
 
 public class NbaFragment extends Fragment implements BottomNavigationBar.OnTabSelectedListener{
-    private FragmentManager fragmentManager;
-    private FragmentTransaction ft;
+    private android.support.v4.app.FragmentManager fragmentManager;
+    private android.support.v4.app.FragmentTransaction ft;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.nbafragment,null);
-        fragmentManager=getFragmentManager();
+        fragmentManager=getActivity().getSupportFragmentManager();
         BadgeItem numberBadgeItem = new BadgeItem()
                 .setBorderWidth(4)
                 .setBackgroundColorResource(R.color.liji_material_red_500)
@@ -37,13 +39,14 @@ public class NbaFragment extends Fragment implements BottomNavigationBar.OnTabSe
         BottomNavigationBar bottomNavigationBar = (BottomNavigationBar)view.findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         bottomNavigationBar
-                .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC
+                .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_DEFAULT
                 );
-        bottomNavigationBar.addItem(new BottomNavigationItem(R.mipmap.home, "首页").setActiveColorResource(R.color.liji_material_blue_700).setBadgeItem(numberBadgeItem))
-                .addItem(new BottomNavigationItem(R.mipmap.match, "比赛").setActiveColorResource(R.color.liji_material_blue_700))
-                .addItem(new BottomNavigationItem(R.mipmap.photo, "图片").setActiveColorResource(R.color.liji_material_blue_700))
-                .addItem(new BottomNavigationItem(R.mipmap.video, "视频").setActiveColorResource(R.color.liji_material_blue_700))
-                .addItem(new BottomNavigationItem(R.mipmap.more, "更多").setActiveColorResource(R.color.liji_material_blue_700))
+        bottomNavigationBar.setBarBackgroundColor(R.color.white);
+        bottomNavigationBar.addItem(new BottomNavigationItem(R.mipmap.home, "首页").setActiveColorResource(R.color.colorPrimary).setBadgeItem(numberBadgeItem))
+                .addItem(new BottomNavigationItem(R.mipmap.match, "比赛").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.mipmap.photo, "图片").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.mipmap.video, "视频").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.mipmap.more, "更多").setActiveColorResource(R.color.colorPrimary))
                 .setFirstSelectedPosition(0)
                 .initialise();
         bottomNavigationBar.setTabSelectedListener(this);
@@ -69,6 +72,12 @@ public class NbaFragment extends Fragment implements BottomNavigationBar.OnTabSe
             case 2:
                 ft.replace(R.id.layFrame,new PhotoFragment());
                 break;
+            case 3:
+                break;
+            case 4:
+                ft.replace(R.id.layFrame,new MoreFragment());
+                break;
+
         }
         ft.commit();
     }

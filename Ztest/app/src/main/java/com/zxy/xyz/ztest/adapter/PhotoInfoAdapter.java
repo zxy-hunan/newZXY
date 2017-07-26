@@ -1,4 +1,4 @@
-package com.zxy.xyz.ztest.ui.NBA;
+package com.zxy.xyz.ztest.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,21 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.zxy.xyz.ztest.ui.NBA.bean.New;
-
-import java.util.List;
 import com.zxy.xyz.ztest.R;
+import com.zxy.xyz.ztest.biz.Pictures;
 
-import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
-import static com.squareup.picasso.MemoryPolicy.NO_STORE;
+import java.util.ArrayList;
 
 
 /**
  * Created by 51c on 2017/7/4.
  */
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
-    private List<New> news;
+public class PhotoInfoAdapter extends RecyclerView.Adapter<PhotoInfoAdapter.ViewHolder> {
+    private ArrayList<Pictures> pictures;
     ViewGroup parent;
     Context context;
 
@@ -44,26 +41,21 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             text_img = (ImageView) itemView.findViewById(R.id.news_img);
         }
     }
-    public NewsAdapter(List<New> news, Context context){
-        this.news=news;
+    public PhotoInfoAdapter(ArrayList<Pictures> pictures, Context context){
+        this.pictures=pictures;
         this.context=context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         this.parent=parent;
-        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_new,parent,false);
+        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_photoinfo,parent,false);
         final ViewHolder viewHolder=new ViewHolder(view);
         viewHolder.newsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position=viewHolder.getAdapterPosition();
 
-                Intent  intent=new Intent(context,NbaInfoActivity.class);
-                intent.putExtra("url",news.get(position).getHref());
-                intent.putExtra("img",news.get(position).getImg());
-                intent.putExtra("title",news.get(position).getTitle());
-                context.startActivity(intent);
             }
         });
         return viewHolder;
@@ -71,16 +63,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-      New ne=news.get(position);
-        holder.text_title.setText(ne.getTitle());
-        holder.text_date.setText(ne.getDate());
-        Picasso.with(parent.getContext()).load(ne.getImg()).memoryPolicy(NO_CACHE, NO_STORE).into(holder.text_img);
+        Log.i("TAG","onBindViewHolder:"+pictures.get(position));
+        Picasso.with(parent.getContext()).load("http:"+pictures.get(position).getpImg()).into(holder.text_img);
+        holder.text_date.setText(pictures.get(position).getpTitle());
     }
 
     @Override
     public int getItemCount() {
-        Log.i("TAG","数据大小:"+news.size());
-        return news.size();
+        Log.i("TAG","photoinfo数据大小:"+pictures.size());
+        return pictures.size();
 
     }
 

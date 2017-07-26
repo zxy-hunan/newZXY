@@ -16,7 +16,12 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.zxy.xyz.ztest.MainActivity;
 import com.zxy.xyz.ztest.R;
+import com.zxy.xyz.ztest.biz.MainPhotoItem;
 
+import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -80,6 +85,34 @@ public class WecActivity extends Activity implements  BDLocationListener{
 
     private void initView() {
         text_wec=(TextView)findViewById(R.id.text_wec);
+        findOrSaveDB();
+
+    }
+
+    private void findOrSaveDB() {
+        List<MainPhotoItem> al= DataSupport.findAll(MainPhotoItem.class);
+        if(al.size()>0){
+
+        }else {
+            ArrayList<MainPhotoItem> arrayList = new ArrayList<>();
+            MainPhotoItem mainPhotoItem1 = new MainPhotoItem("美女","http://www.jj20.com/bz/nxxz/","1");
+            MainPhotoItem mainPhotoItem2 = new MainPhotoItem("人物","http://www.jj20.com/bz/rwtx/","1");
+            MainPhotoItem mainPhotoItem3 = new MainPhotoItem("影视","http://www.jj20.com/bz/ysbz/","1");
+            MainPhotoItem mainPhotoItem4 = new MainPhotoItem("体育","http://www.jj20.com/bz/tyyd/","1");
+            MainPhotoItem mainPhotoItem5 = new MainPhotoItem("动物","http://www.jj20.com/bz/dwxz/","1");
+            MainPhotoItem mainPhotoItem6 = new MainPhotoItem("卡通","http://www.jj20.com/bz/ktmh/","0");
+            MainPhotoItem mainPhotoItem7 = new MainPhotoItem("美食","http://www.jj20.com/bz/mwjy/","0");
+            MainPhotoItem mainPhotoItem8 = new MainPhotoItem("风景","http://www.jj20.com/bz/zrfg/","0");
+            arrayList.add(mainPhotoItem1);
+            arrayList.add(mainPhotoItem2);
+            arrayList.add(mainPhotoItem3);
+            arrayList.add(mainPhotoItem4);
+            arrayList.add(mainPhotoItem5);
+            arrayList.add(mainPhotoItem6);
+            arrayList.add(mainPhotoItem7);
+            arrayList.add(mainPhotoItem8);
+            DataSupport.saveAll(arrayList);
+        }
     }
 
 

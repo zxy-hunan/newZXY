@@ -1,10 +1,9 @@
 package com.zxy.xyz.ztest;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
+import com.zxy.xyz.ztest.ui.Main.MainFragment;
 import com.zxy.xyz.ztest.ui.MapFragment;
 import com.zxy.xyz.ztest.ui.NbaFragment;
 import com.zxy.xyz.ztest.ui.WeatherFragment;
@@ -30,12 +30,13 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    private static final String APIKEY="e103e89a494819ff264702cb45eec528";
+    private static final String APIKEY = "e103e89a494819ff264702cb45eec528";
     private MapView mMapView;
     private BaiduMap baiduMap;
-    private Toolbar toolbar;
-    FragmentManager fragmentManager;
-    FragmentTransaction ft;
+    public static TabLayout mTabLayout;
+    public static Toolbar toolbar;
+    android.support.v4.app.FragmentManager fragmentManager;
+    android.support.v4.app.FragmentTransaction ft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,21 +45,29 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         x.view().inject(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mTabLayout = (TabLayout)findViewById(R.id.tab_FindFragment_title);
 //        setSupportActionBar(toolbar);
-
+        toolbar.setNavigationIcon(R.mipmap.ic_launcher);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        fragmentManager=getFragmentManager();
 
-        mMapView=(MapView)findViewById(R.id.bmapview);
-        baiduMap=mMapView.getMap();
+        fragmentManager = getSupportFragmentManager();
 
+        mMapView = (MapView) findViewById(R.id.bmapview);
+        baiduMap = mMapView.getMap();
+        ft = fragmentManager.beginTransaction();
+        try {
+            ft.replace(R.id.content_main, new MainFragment());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ft.commit();
     }
 
     @Override
@@ -76,23 +85,24 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Intent intent=new Intent();
-        ft=fragmentManager.beginTransaction();
+        Intent intent = new Intent();
+        ft = fragmentManager.beginTransaction();
 
         if (id == R.id.nav_camera) {
-            toolbar.setVisibility(View.VISIBLE);
-            ft.replace(R.id.content_main,new MapFragment());
+//            toolbar.setVisibility(View.GONE);
+            ft.replace(R.id.content_main, new MainFragment());
         } else if (id == R.id.nav_gallery) {
             try {
                 toolbar.setVisibility(View.GONE);
-                ft.replace(R.id.content_main,new WeatherFragment());
+                ft.replace(R.id.content_main, new WeatherFragment());
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
         } else if (id == R.id.nav_slideshow) {
             toolbar.setVisibility(View.VISIBLE);
-            ft.replace(R.id.content_main,new NbaFragment());
+            mTabLayout.setVisibility(View.GONE);
+            ft.replace(R.id.content_main, new NbaFragment());
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -106,18 +116,21 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public void findWeather(){
+
+    public void findWeather() {
 
 
     }
-boolean isBack=false;
+
+    boolean isBack = false;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction()==MotionEvent.ACTION_DOWN){
-            if(!isBack) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (!isBack) {
                 Toast.makeText(this, "再按一次退出！", Toast.LENGTH_SHORT).show();
-                isBack=true;
-            }else{
+                isBack = true;
+            } else {
                 finish();
             }
         }

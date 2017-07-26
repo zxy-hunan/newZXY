@@ -54,6 +54,7 @@
             android:enabled="true"
             android:process=":remote"
             ></service>
+        <activity android:name=".ui.Main.MainPhotoInfoActivity"></activity>
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"

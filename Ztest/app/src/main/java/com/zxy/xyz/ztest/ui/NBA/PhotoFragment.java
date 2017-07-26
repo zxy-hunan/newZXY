@@ -1,6 +1,6 @@
 package com.zxy.xyz.ztest.ui.NBA;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.zxy.xyz.ztest.MainActivity;
 import com.zxy.xyz.ztest.R;
 import com.zxy.xyz.ztest.adapter.PhotoAdapter;
 import com.zxy.xyz.ztest.biz.Pictures;
@@ -31,7 +32,8 @@ public class PhotoFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         View view=inflater.inflate(R.layout.nbahome,null);
         swipeRefreshLayout = (android.support.v4.widget.SwipeRefreshLayout) view.findViewById(R.id.main_srl);
         recyclerView = (RecyclerView) view.findViewById(R.id.main_lv);
-
+        MainActivity.toolbar.setTitle("图片");
+        MainActivity.toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         initView();
         ArrayList<Pictures> pAl=(ArrayList)DataSupport.findAll(Pictures.class);
         PhotoAdapter adapter=new PhotoAdapter(pAl,getActivity());

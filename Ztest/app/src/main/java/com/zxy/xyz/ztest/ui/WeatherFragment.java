@@ -1,6 +1,6 @@
 package com.zxy.xyz.ztest.ui;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -275,7 +275,7 @@ public class WeatherFragment extends Fragment implements BDLocationListener, Vie
 
             case R.id.image_add:
                 try {
-                    getActivity().getFragmentManager().beginTransaction().replace(R.id.content_main,new CityPickerFragment()).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_main,new CityPickerFragment()).commit();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
