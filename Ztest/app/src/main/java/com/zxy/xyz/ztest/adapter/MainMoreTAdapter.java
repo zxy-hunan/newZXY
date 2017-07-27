@@ -2,6 +2,7 @@ package com.zxy.xyz.ztest.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class MainMoreTAdapter extends RecyclerView.Adapter<MainMoreTAdapter.View
     private List<MainPhotoItem> pictures;
     ViewGroup parent;
     Context context;
+    Handler mHandler;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         View newsView;
@@ -35,9 +37,10 @@ public class MainMoreTAdapter extends RecyclerView.Adapter<MainMoreTAdapter.View
             text_img = (TextView) itemView.findViewById(R.id.news_img);
         }
     }
-    public MainMoreTAdapter(List<MainPhotoItem> pictures, Context context){
+    public MainMoreTAdapter(List<MainPhotoItem> pictures, Context context, Handler mHandler){
         this.pictures=pictures;
         this.context=context;
+        this.mHandler=mHandler;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class MainMoreTAdapter extends RecyclerView.Adapter<MainMoreTAdapter.View
             @Override
             public void onClick(View v) {
                 int position=viewHolder.getAdapterPosition();
-                DialogUtil.addDialog(context,pictures.get(position));
+                DialogUtil.addDialog(context,pictures.get(position),mHandler);
 
             }
         });

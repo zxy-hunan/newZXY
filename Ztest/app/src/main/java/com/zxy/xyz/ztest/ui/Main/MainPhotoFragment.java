@@ -7,6 +7,8 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -39,6 +41,7 @@ public class MainPhotoFragment extends Fragment {
             recyclerView.addItemDecoration(decoration);
         }
     };
+
     public MainPhotoFragment(String path){
 this.path=path;
     }
@@ -48,6 +51,9 @@ this.path=path;
         View view=inflater.inflate(R.layout.mainphotofragment,null);
         swipeRefreshLayout = (android.support.v4.widget.SwipeRefreshLayout) view.findViewById(R.id.main_srl);
         recyclerView = (RecyclerView) view.findViewById(R.id.main_lv);
+//        mVerticalGridManager = new GridLayoutManager(getActivity(), 2,
+//                LinearLayoutManager.VERTICAL, false);
+
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         MainNet mainNet=new MainNet(mHandler,path);
         return view;

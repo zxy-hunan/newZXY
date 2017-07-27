@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
     android:orientation="vertical">
+
 
         <TextView
             android:id="@+id/news_img"
             android:layout_gravity="center"
             android:layout_width="80dp"
             android:layout_height="30dp"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:gravity="center"
-            android:layout_marginRight="20dp"
             android:text="12345"
             android:textColor="#050505"
             android:textSize="12dp"
             android:background="@drawable/shape_corner"/>
 
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/image_remove"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@mipmap/remove"
+            android:layout_alignParentTop="true"
+            android:layout_alignEnd="@+id/news_img" />
 
-</LinearLayout>
+
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.zxy.xyz.ztest.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
@@ -41,7 +42,7 @@ public class DialogUtil {
         builder.create().show();
     }
 
-    public static void addDialog(Context context, final MainPhotoItem mainPhotoItem){
+    public static void addDialog(Context context, final MainPhotoItem mainPhotoItem, final Handler mHandler){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage("确认添加吗？");
 
@@ -54,6 +55,8 @@ public class DialogUtil {
                 MainPhotoItem photoItem=new MainPhotoItem();
                 photoItem.setStatus("1");
                 photoItem.updateAll("title = ?",mainPhotoItem.getTitle());
+                mHandler.sendEmptyMessage(0);
+                mHandler.sendEmptyMessage(1);
                 dialog.dismiss();
             }
         });

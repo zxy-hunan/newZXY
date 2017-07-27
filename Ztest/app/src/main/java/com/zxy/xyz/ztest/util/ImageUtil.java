@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static android.R.attr.path;
 
 /**
  * Created by ZXY on 2017/7/24.
@@ -57,6 +56,17 @@ public class ImageUtil {
         }  
         else  
             return "/data/data/com.example.imageviewsave2bitmap/saving_picture";  
-    } 
+    }
+
+
+    public static Bitmap convertViewToBitmap(View view)
+    {
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+
+        return bitmap;
+    }
 
 }
